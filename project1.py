@@ -68,3 +68,52 @@ model.fit(X_train_scaled,y_train)
 
 print(" Model training complete!")
 
+print("/n Evaluating model performance")
+
+y_pred=model.predict(X_test_scaled)
+
+accuracy=accuracy_score(y_test, y_pred)
+print(f"\n Model accuracy is: {accuracy *100:.2f}%")
+
+print("\n Detailed performance report")
+print(classification_report(y_test,y_pred))
+
+feature_importance=pd.DataFrame({
+    'feature':X.columns,
+    'importance':model.feature_importances_
+}).sort_values('importance',ascending=False)
+
+print("\n Feature Importance (what matters most):")
+print(feature_importance)
+
+print("\n creating visualization")
+plt.figure(figsize=(8,6))
+
+cm=confusion_matrix(y_test,y_pred,labels=['High Risk','Medium Risk','Safe'])
+sns.heatmap(cm,annot=True, fmt='d', cmap='Blues',
+            xticklabels=['High Risk','Medium Risk','Safe'],
+            yticklabels=['High Risk','Medium Risk','Safe'])
+plt.title('Confusion Matrix - Prediction Accuracy')
+plt.ylabel('Actual Risk Level')
+plt.xlabel('Predicted risk level')
+plt.tight_layout()
+plt.savefig('Confution_matrix.png')
+
+print("Saved confusion_matrix.png")
+
+plt.figure(figsize=(10,6))
+plt.brah(feature_importance['feature'],feature_importance['importance'])
+plt.xlabel('importance score')
+plt.title('which Factors Matter Most For Student Preformance')
+plt.tight_layout()
+plt.savegif('feature_importance.png')
+print('Saved Features_Importance.png')
+
+print("\n saving the model")
+
+
+
+
+
+
+
